@@ -71,12 +71,10 @@ class GameControl(StateMachine):
         num_freq = Counter(self.num)
         for i in range(len(guess)):
             if guess[i] == self.num[i]:
-                correct_nums += 1
                 correct_loc += 1
-            else:
-                if guess[i] in num_freq and num_freq[guess[i]] != 0:
-                    correct_nums += 1
-                    num_freq[guess[i]] -= 1
+            if guess[i] in num_freq and num_freq[guess[i]] != 0:
+                correct_nums += 1
+                num_freq[guess[i]] -= 1
         if self.won:
             self.view.display_winner(
                 num=self.num, attempt=self.attempt, attempts=self.attempts)

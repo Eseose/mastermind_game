@@ -70,9 +70,7 @@ class Display:
         
     """
         print(about_full)
-        choice = None
-        while choice not in {"Y", "N"}:
-            choice = input("Exit About? [Y/N] ").upper()
+        choice = input("Press ENTER to exit\n")
         return choice
 
     def display_winner(self, num, attempt, attempts):
