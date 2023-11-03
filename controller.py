@@ -13,34 +13,29 @@ class GameControl(StateMachine):
     off = State(final=True)  # exited
 
     choose_difficulty = on.to(on, on="difficulty_chosen")
-    about = on.to(on, on="exit_about")
     initialize_game = on.to(in_progress, on="game_initialized")
     make_attempt = (
         in_progress.to(in_progress, unless="game_finished") |
         in_progress.to(finished, cond="game_finished")
     )
     restart_game = finished.to(on)
-# ---------------------------------------------------------------------------------------------- #
-    # neater way needed (on,in_prog,off).to(off, cond="quit_confirmed")
-    # | (on,in_prog,off).to.itself(unless="quit_confirmed")
 
-    quit_game = ((
-        on.to(off, cond="quit_confirmed") | on.to(
-            on, unless="quit_confirmed")) | (
-        in_progress.to(off, cond="quit_confirmed") | in_progress.to(
-            in_progress, unless="quit_confirmed")) | (
-        finished.to(off, cond="quit_confirmed") | finished.to(
-            finished, unless="quit_confirmed"))
+    exit_to_main_menu = (
+        on.to(on) |
+        in_progress.to(on, cond="action_confirmed") |
+        in_progress.to(in_progress, unless="action_confirmed") |
+        finished.to(on, cond="action_confirmed") |
+        finished.to(finished, unless="action_confirmed")
     )
 
-    # quit_game_menu = on.to(off, cond="quit_confirmed") | on.to(
-    #     on, unless="quit_confirmed")
-
-    # quit_game_playing = in_progress.to(off, cond="quit_confirmed") | in_progress.to(
-    #     in_progress, unless="quit_confirmed")
-
-    # quit_game_finished = finished.to(off, cond="quit_confirmed") | finished.to(
-    #     finished, unless="quit_confirmed")
+    quit_game = (
+        on.to(off, cond="action_confirmed") |
+        on.to(on, unless="action_confirmed") |
+        in_progress.to(off, cond="action_confirmed") |
+        in_progress.to(in_progress, unless="action_confirmed") |
+        finished.to(off, cond="action_confirmed") |
+        finished.to(finished, unless="action_confirmed")
+    )
 
     def __init__(self):
 
@@ -76,12 +71,10 @@ class GameControl(StateMachine):
         num_freq = Counter(self.num)
         for i in range(len(guess)):
             if guess[i] == self.num[i]:
-                correct_nums += 1
                 correct_loc += 1
-            else:
-                if guess[i] in num_freq and num_freq[guess[i]] != 0:
-                    correct_nums += 1
-                    num_freq[guess[i]] -= 1
+            if guess[i] in num_freq and num_freq[guess[i]] != 0:
+                correct_nums += 1
+                num_freq[guess[i]] -= 1
         if self.won:
             self.view.display_winner(
                 num=self.num, attempt=self.attempt, attempts=self.attempts)
@@ -107,30 +100,13 @@ class GameControl(StateMachine):
         self.num = NumberRandomizer().get(r_type=str)
         print(self.num)
 
-    def result_reveal(self):
-        if self.won:
-            view.display_winner(
-                num=self.num, attempt=self.attempt, attempts=self.attempts)
-        else:
-            if self.attempt == 10:
-                view.display_loser(self.num)
-            elif self.correct_nums == 0 and self.correct_loc == 0:
-                view.display_incorrect(all_incorrect=True)
-            else:
-                view.display_incorrect(self.correct_nums, self.correct_loc)
-
     def difficulty_chosen(self, choice):
         self.difficulty = self.difficulty_levels[choice - 1]
         if self.difficulty is not None:
             return True
         return False
 
-    def exit_about(self, choice):
-        if choice == "Y":
-            return True
-        return False
-
-    def quit_confirmed(self, choice):
+    def action_confirmed(self, choice):
         if choice == "Y":
             return True
         return False

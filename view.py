@@ -42,13 +42,22 @@ class Display:
     def display_confirm_quit(self):
         choice = None
         while choice not in {"Y", "N"}:
-            choice = input("Quit Game? Y/N\n").upper()
+            choice = input("Quit Game? [Y/N] ").upper()
+        return choice
+
+    def display_confirm_exit_to_main_menu(self):
+        choice = None
+        while choice not in {"Y", "N"}:
+            choice = input("Exit to Main Menu? [Y/N] ").upper()
         return choice
 
     def display_choose_difficulty(self):
-        display = "Difficulty Levels:\n1 : Easy\n2 : Medium\n3 : Hard\n"
+        display = "Difficulty Levels:\n1 : Easy\n2 : Medium [DEFAULT]\n3 : Hard\n4 : Exit\n"
         print(display)
-        choice = self.get_int(options={1, 2, 3})
+        choice = self.get_int(options={1, 2, 3, 4})
+
+        if choice == 4:
+            return "Q"
         return choice
 
     def display_about(self):
@@ -60,23 +69,13 @@ class Display:
     GOOD LUCK!
         
     """
-
-        about = "\t\tABOUT\n"
-        about_1 = "Your task is to guess a 4 digit number correctly "
-        about_2 = "from a total of 8 different numbers.\nThe number "
-        about_3 = "of attempts you have depends on your choosen "
-        about_4 = "difficulty level.\nPossible Numbers: [0  1  2  3  4  5  6  7]"
-        about_5 = "\nGOOD LUCK!\n"
-        about_msg = about + about_1 + about_2 + about_3 + about_4 + about_5
         print(about_full)
-        choice = None
-        while choice not in {"Y", "N", "Q"}:
-            choice = input("Exit About?  Y/N\n").upper()
+        choice = input("Press ENTER to exit\n")
         return choice
 
     def display_winner(self, num, attempt, attempts):
         print(
-            f"\t\tYou are a MASTERMIND!\n\tYou guessed {num} in {attempt} out of {attempts} attempts!")
+            f"\t\tYou are a MASTERMIND!\n\tYou guessed {num} in {attempt + 1} out of {attempts} attempts!")
 
     def display_loser(self, num):
         print(f"Oops, You ran out of attempts.\nThe correct number is {num}.")
