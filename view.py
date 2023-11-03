@@ -61,13 +61,13 @@ class Display:
         
     """
 
-        about = "\t\tABOUT\n"
-        about_1 = "Your task is to guess a 4 digit number correctly "
-        about_2 = "from a total of 8 different numbers.\nThe number "
-        about_3 = "of attempts you have depends on your choosen "
-        about_4 = "difficulty level.\nPossible Numbers: [0  1  2  3  4  5  6  7]"
-        about_5 = "\nGOOD LUCK!\n"
-        about_msg = about + about_1 + about_2 + about_3 + about_4 + about_5
+        # about = "\t\tABOUT\n"
+        # about_1 = "Your task is to guess a 4 digit number correctly "
+        # about_2 = "from a total of 8 different numbers.\nThe number "
+        # about_3 = "of attempts you have depends on your choosen "
+        # about_4 = "difficulty level.\nPossible Numbers: [0  1  2  3  4  5  6  7]"
+        # about_5 = "\nGOOD LUCK!\n"
+        # about_msg = about + about_1 + about_2 + about_3 + about_4 + about_5
         print(about_full)
         choice = None
         while choice not in {"Y", "N", "Q"}:
