@@ -1,52 +1,44 @@
 from controller import GameControl
 from view import Display
 
+
+def get_user_input(game_obj: GameControl, view_obj: Display):
+    if game_obj.current_state == game_obj.on:
+        return view_obj.display_main_menu()
+    elif game_obj.current_state == game_obj.in_progress:
+        return view_obj.get_user_guess(
+            attempts=game_obj.attempts, attempt=game_obj.attempt)
+    elif game_obj.current_state == game_obj.finished:
+        return view_obj.display_end_menu()
+
+
 game = GameControl()
 view = Display()
 
 while game.current_state != game.off:
     # can input and quit be here???
+    user_choice = get_user_input(game, view)
+    if user_choice == "Q":
+        if game.current_state == game.on:
+            quit_choice = view.display_confirm_quit()
+            game.quit_game(quit_choice)
+        else:
+            quit_choice = view.display_confirm_exit_to_main_menu()
+            game.exit_to_main_menu(quit_choice)
 
     if game.current_state == game.on:
-        user_choice = view.display_main_menu()
-        if user_choice == "Q":
-            quit_choice = view.display_confirm_quit()
-            # game.quit_game_menu(quit_choice)
-            game.quit_game(quit_choice)
-        elif user_choice == "S":
+        if user_choice == "S":
             game.initialize_game()
         elif user_choice == "A":
-            # print about and and main menu
             user_choice = view.display_about()
-            if user_choice == "Q":
-                quit_choice = view.display_confirm_quit()
-                # game.quit_game_menu(quit_choice)
-                game.quit_game(quit_choice)
-            else:
-                game.about(user_choice)
         elif user_choice == "D":
-            # difficulty transition function
             user_choice = view.display_choose_difficulty()
             if user_choice == "Q":
-                quit_choice = view.display_confirm_quit()
-                # game.quit_game_menu(quit_choice)
-                game.quit_game(quit_choice)
+                quit_choice = view.display_confirm_exit_to_main_menu()
+                game.exit_to_main_menu(quit_choice)
             else:
                 game.choose_difficulty(user_choice)
     elif game.current_state == game.in_progress:
-        user_choice = view.get_user_guess(
-            attempts=game.attempts, attempt=game.attempt)
-        if user_choice == "Q":
-            quit_choice = view.display_confirm_quit()
-            # game.quit_game_playing(quit_choice)
-            game.quit_game(quit_choice)
-        else:
-            game.make_attempt(user_choice)
+        game.make_attempt(user_choice)
     elif game.current_state == game.finished:
-        user_choice = view.display_end_menu()
-        if user_choice == "R":
-            game.restart_game()
-        elif user_choice == "Q":
-            quit_choice = view.display_confirm_quit()
-            # game.quit_game_finished(quit_choice)
-            game.quit_game(quit_choice)
+        game.restart_game()
