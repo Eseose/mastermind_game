@@ -1,5 +1,5 @@
-from controller import GameControl
-from view import Display
+from src.controller import GameControl
+from src.view import Display
 
 
 def get_user_input(game_obj: GameControl, view_obj: Display):

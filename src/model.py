@@ -1,5 +1,5 @@
-from number_randomizer import NumberRandomizer
-from app_config import APP_CONFIG, Base
+from src.number_randomizer import NumberRandomizer
+from src.app_config import APP_CONFIG, Base
 
 from sqlalchemy import Column, Identity, ForeignKey
 from sqlalchemy import Integer, Boolean, String, Double

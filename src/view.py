@@ -1,5 +1,5 @@
-from app_config import APP_CONFIG
-from leader_board import LeaderBoard
+from src.app_config import APP_CONFIG
+from src.leader_board import LeaderBoard
 
 
 class Display:

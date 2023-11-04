@@ -1,8 +1,8 @@
 from statemachine import StateMachine, State
 from collections import Counter
-from view import Display
-from model import GameModel
-from app_config import APP_CONFIG, DifficultyConfigDefault
+from src.view import Display
+from src.model import GameModel
+from src.app_config import APP_CONFIG, DifficultyConfigDefault
 import time
 
 
