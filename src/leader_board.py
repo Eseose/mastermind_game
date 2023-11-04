@@ -1,6 +1,6 @@
 from sqlalchemy import select
-from app_config import APP_CONFIG
-from model import GameModel
+from src.app_config import APP_CONFIG
+from src.model import GameModel
 
 
 class LeaderBoard:

@@ -25,7 +25,7 @@ class AppConfig:
 
     def __init__(self):
         self.difficulty = "Medium"
-        self.database_path = "mastermind.db"
+        self.database_path = "./data/mastermind.db"
         self.config = {}
         self.set_difficulty(self.difficulty)
         self._db_session = None
