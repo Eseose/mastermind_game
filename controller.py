@@ -2,6 +2,7 @@ from statemachine import StateMachine, State
 from collections import Counter
 from view import Display
 from model import GameModel
+from app_config import APP_CONFIG, DifficultyConfigDefault
 
 
 class GameControl(StateMachine):
@@ -41,8 +42,6 @@ class GameControl(StateMachine):
 
         self.game_model = None
         self.guess = None
-        self.difficulty_levels = ["Easy", "Medium", "Hard"]
-        self.difficulty = "Medium"
 
         self.view = Display()
 
@@ -74,7 +73,7 @@ class GameControl(StateMachine):
                 num_freq[guess[i]] -= 1
         if self.game_model.won:
             self.view.display_winner(
-                num=self.game_model.num, attempt=self.game_model.attempt, attempts=self.game_model.attempts)
+                num=self.game_model.num, attempt=self.game_model.attempt)
         else:
             if self.game_model.attempt == 10:
                 self.view.display_loser(num=self.game_model.num)
@@ -86,11 +85,12 @@ class GameControl(StateMachine):
 
     def game_initialized(self):
         # sets game(i.e attempts, difficulty, num)based on user_setting or default
-        self.game_model = GameModel(self.difficulty)
+        self.game_model = GameModel()
 
     def difficulty_chosen(self, choice):
-        self.difficulty = self.difficulty_levels[choice - 1]
-        if self.difficulty is not None:
+        APP_CONFIG.set_difficulty(
+            list(DifficultyConfigDefault.keys())[choice - 1])
+        if APP_CONFIG.difficulty is not None:
             return True
         return False
 

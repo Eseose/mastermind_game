@@ -6,8 +6,7 @@ def get_user_input(game_obj: GameControl, view_obj: Display):
     if game_obj.current_state == game_obj.on:
         return view_obj.display_main_menu()
     elif game_obj.current_state == game_obj.in_progress:
-        return view_obj.get_user_guess(
-            attempts=game_obj.game_model.attempts, attempt=game_obj.game_model.attempt)
+        return view_obj.get_user_guess(attempt=game_obj.game_model.attempt)
     elif game_obj.current_state == game_obj.finished:
         return view_obj.display_end_menu()
 

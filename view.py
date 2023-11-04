@@ -1,3 +1,6 @@
+from app_config import APP_CONFIG
+
+
 class Display:
 
     def __init__(self):
@@ -61,11 +64,12 @@ class Display:
         return choice
 
     def display_about(self):
-        about_full = """
+        possible_numbers = [i for i in range(APP_CONFIG.config["maximum"] + 1)]
+        about_full = f"""
             ABOUT
-    Your task is to guess a 4 digit number correctly from a total of 8 different numbers.
+    Your task is to guess a 4 digit number correctly from a total of {len(possible_numbers)} different numbers.
     The number of attempts you have depends on your choosen difficulty level.
-    Possible Numbers: [0  1  2  3  4  5  6  7]
+    Possible Numbers: {possible_numbers}
     GOOD LUCK!
         
     """
@@ -73,7 +77,8 @@ class Display:
         choice = input("Press ENTER to exit\n")
         return choice
 
-    def display_winner(self, num, attempt, attempts):
+    def display_winner(self, num, attempt):
+        attempts = APP_CONFIG.config["attempts"]
         print(
             f"\t\tYou are a MASTERMIND!\n\tYou guessed {num} in {attempt + 1} out of {attempts} attempts!")
 
@@ -87,7 +92,8 @@ class Display:
             print(
                 f"Correct numbers: {correct_nums}\nCorrect locations: {correct_loc}\n")
 
-    def get_user_guess(self, attempts, attempt):
+    def get_user_guess(self, attempt):
+        attempts = APP_CONFIG.config["attempts"]
         valid_input = False
         while not valid_input:
             msg = f"You have {attempts - attempt} attempts left.\n"
