@@ -1,3 +1,7 @@
+from app_config import APP_CONFIG
+from leader_board import LeaderBoard
+
+
 class Display:
 
     def __init__(self):
@@ -24,12 +28,17 @@ class Display:
             choice = input("Your Choice: ").upper()
         return choice
 
+    def get_user_name(self):
+        if APP_CONFIG.current_player is not None:
+            return
+        APP_CONFIG.current_player = input("Enter Username: ")
+
     def display_main_menu(self):
         welcome = "\t\tWELCOME TO MASTERMIND\n\n"
-        choices = "S : Start\nD : Difficulty\nA : About\nQ : Quit\n"
+        choices = "S : Start\nD : Difficulty\nA : About\nL : Leader Board\nQ : Quit\n"
         menu = welcome + choices
         print(menu)
-        return self.get_str(options={"S", "D", "A", "Q"})
+        return self.get_str(options={"S", "D", "A", "L", "Q"})
 
     def display_end_menu(self):
         thanks = "\n\tThank you for playing MASTERMIND!!!\n"
@@ -37,7 +46,10 @@ class Display:
         choices = "R : Restart\nQ : Quit\n"
         menu = thanks + question + choices
         print(menu)
-        return self.get_str(options={"R", "Q"})
+        choice = self.get_str(options={"R", "Q"})
+        if choice == "Q":
+            APP_CONFIG.current_player = None
+        return choice
 
     def display_confirm_quit(self):
         choice = None
@@ -61,11 +73,12 @@ class Display:
         return choice
 
     def display_about(self):
-        about_full = """
+        possible_numbers = [i for i in range(APP_CONFIG.config["maximum"] + 1)]
+        about_full = f"""
             ABOUT
-    Your task is to guess a 4 digit number correctly from a total of 8 different numbers.
+    Your task is to guess a 4 digit number correctly from a total of {len(possible_numbers)} different numbers.
     The number of attempts you have depends on your choosen difficulty level.
-    Possible Numbers: [0  1  2  3  4  5  6  7]
+    Possible Numbers: {possible_numbers}
     GOOD LUCK!
         
     """
@@ -73,7 +86,16 @@ class Display:
         choice = input("Press ENTER to exit\n")
         return choice
 
-    def display_winner(self, num, attempt, attempts):
+    def display_leader_board(self):
+        print(f"\t\tLEADER BOARD [{APP_CONFIG.difficulty}]\n\n")
+        for game_model in LeaderBoard.get_leaders():
+            print(game_model, "\n")
+        print("\n")
+        choice = input("Press ENTER to exit\n")
+        return choice
+
+    def display_winner(self, num, attempt):
+        attempts = APP_CONFIG.config["attempts"]
         print(
             f"\t\tYou are a MASTERMIND!\n\tYou guessed {num} in {attempt + 1} out of {attempts} attempts!")
 
@@ -87,7 +109,8 @@ class Display:
             print(
                 f"Correct numbers: {correct_nums}\nCorrect locations: {correct_loc}\n")
 
-    def get_user_guess(self, attempts, attempt):
+    def get_user_guess(self, attempt):
+        attempts = APP_CONFIG.config["attempts"]
         valid_input = False
         while not valid_input:
             msg = f"You have {attempts - attempt} attempts left.\n"
@@ -104,19 +127,21 @@ class Display:
                     print(is_valid[1])
 
     def is_valid(self, guess_str) -> tuple:
+        maximum = APP_CONFIG.config["maximum"]
+        possible_numbers = [i for i in range(APP_CONFIG.config["maximum"] + 1)]
         try:
             guess_int = int(guess_str)
         except:
             return (False, "Please input must be numbers.")
         count = 4
         for char in guess_str:
-            if 0 <= int(char) < 8:
+            if 0 <= int(char) < maximum + 1:
                 count -= 1
         if count == 0:
             return (True, )
         else:
             return (False, "The 4 numbers in your guess must ONLY"
-                    " be chosen from these [0, 1, 2, 3, 4, 5, 6, 7]")
+                    f" be chosen from these {possible_numbers}")
 
     def display_msg(self, msg):
         print(msg)
