@@ -1,7 +1,7 @@
-from number_randomizer import NumberRandomizer
 from statemachine import StateMachine, State
 from collections import Counter
 from view import Display
+from model import GameModel
 
 
 class GameControl(StateMachine):
@@ -39,13 +39,10 @@ class GameControl(StateMachine):
 
     def __init__(self):
 
-        self.num = None
-        self.attempts = None
-        self.attempt = None
+        self.game_model = None
         self.guess = None
-        self.won = None
-        self.difficulty = None  # set at game_initiate
         self.difficulty_levels = ["Easy", "Medium", "Hard"]
+        self.difficulty = "Medium"
 
         self.view = Display()
 
@@ -53,12 +50,12 @@ class GameControl(StateMachine):
 
     def game_finished(self, guess):
         self.guess = guess
-        if guess == self.num:
-            self.won = True
+        if guess == self.game_model.num:
+            self.game_model.won = True
             return True
 
-        attempts_left = self.attempts - self.attempt - 1
-        self.attempt += 1
+        attempts_left = self.game_model.attempts - self.game_model.attempt - 1
+        self.game_model.attempt += 1
         if attempts_left == 0:
             return True
         return False
@@ -68,19 +65,19 @@ class GameControl(StateMachine):
 
     def check_precision(self, guess):
         correct_nums, correct_loc = 0, 0
-        num_freq = Counter(self.num)
+        num_freq = Counter(self.game_model.num)
         for i in range(len(guess)):
-            if guess[i] == self.num[i]:
+            if guess[i] == self.game_model.num[i]:
                 correct_loc += 1
             if guess[i] in num_freq and num_freq[guess[i]] != 0:
                 correct_nums += 1
                 num_freq[guess[i]] -= 1
-        if self.won:
+        if self.game_model.won:
             self.view.display_winner(
-                num=self.num, attempt=self.attempt, attempts=self.attempts)
+                num=self.game_model.num, attempt=self.game_model.attempt, attempts=self.game_model.attempts)
         else:
-            if self.attempt == 10:
-                self.view.display_loser(num=self.num)
+            if self.game_model.attempt == 10:
+                self.view.display_loser(num=self.game_model.num)
             elif correct_nums == 0 and correct_loc == 0:
                 self.view.display_incorrect()
             else:
@@ -89,16 +86,7 @@ class GameControl(StateMachine):
 
     def game_initialized(self):
         # sets game(i.e attempts, difficulty, num)based on user_setting or default
-        if self.difficulty is None or self.difficulty == "Medium":
-            self.difficulty = "Medium"
-            self.attempts = 10
-        else:
-            self.attempts = [5 if difficulty == "Hard" else 15]
-        self.won = False
-        self.attempt = 0
-
-        self.num = NumberRandomizer().get(r_type=str)
-        print(self.num)
+        self.game_model = GameModel(self.difficulty)
 
     def difficulty_chosen(self, choice):
         self.difficulty = self.difficulty_levels[choice - 1]
