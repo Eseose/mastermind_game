@@ -3,6 +3,7 @@ from collections import Counter
 from view import Display
 from model import GameModel
 from app_config import APP_CONFIG, DifficultyConfigDefault
+import time
 
 
 class GameControl(StateMachine):
@@ -42,6 +43,7 @@ class GameControl(StateMachine):
 
         self.game_model = None
         self.guess = None
+        self.start_time = None
 
         self.view = Display()
 
@@ -56,8 +58,20 @@ class GameControl(StateMachine):
         attempts_left = self.game_model.attempts - self.game_model.attempt - 1
         self.game_model.attempt += 1
         if attempts_left == 0:
+            self.game_model.won = False
             return True
         return False
+
+    def on_enter_finished(self):
+        # Player quit game.
+        if self.game_model.won is None:
+            return
+        # Player finished game
+        stop_time = time.time()
+        self.game_model.time_elapsed = stop_time - self.start_time
+        session = APP_CONFIG.get_db_session()
+        session.add_all([self.game_model])
+        session.commit()
 
     def after_make_attempt(self):
         self.check_precision(self.guess)
@@ -85,6 +99,7 @@ class GameControl(StateMachine):
 
     def game_initialized(self):
         # sets game(i.e attempts, difficulty, num)based on user_setting or default
+        self.start_time = time.time()
         self.game_model = GameModel()
 
     def difficulty_chosen(self, choice):
