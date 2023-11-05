@@ -5,6 +5,15 @@ from src.model import GameModel, RoundModel
 
 class Queries:
 
+    r'''
+        Creates a class with methods to query the SQL database.
+
+        Class Static Methods
+        :param get_leaders: gets a leaderboard from the database using difficulty level
+        :param get_rounds: gets a history of rounds from the database using current game_id
+
+    '''
+
     @staticmethod
     def get_leaders(difficulty=None, limit=3):
         if difficulty is None:
