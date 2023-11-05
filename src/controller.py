@@ -24,10 +24,8 @@ class GameControl(StateMachine):
 
     exit_to_main_menu = (
         on.to(on) |
-        in_progress.to(on, cond="action_confirmed") |
-        in_progress.to(in_progress, unless="action_confirmed") |
-        finished.to(on, cond="action_confirmed") |
-        finished.to(finished, unless="action_confirmed")
+        in_progress.to(on) |
+        finished.to(on)
     )
 
     quit_game = (

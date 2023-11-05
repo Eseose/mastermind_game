@@ -22,8 +22,7 @@ while game.current_state != game.off:
             quit_choice = view.display_confirm_quit()
             game.quit_game(quit_choice)
         else:
-            quit_choice = view.display_confirm_exit_to_main_menu()
-            game.exit_to_main_menu(quit_choice)
+            game.exit_to_main_menu(user_choice)
 
     if game.current_state == game.on:
         if user_choice == "S":
@@ -40,10 +39,7 @@ while game.current_state != game.off:
                 game.choose_difficulty(user_choice)
         elif user_choice == "L":
             view.display_leader_board()
-    elif game.current_states == game.in_progress:
-        if user_choice == "G":
-            view.display_rounds()
-        else:
-            game.make_attempt(user_choice)
+    elif game.current_state == game.in_progress:
+        game.make_attempt(user_choice)
     elif game.current_state == game.finished:
         game.restart_game()

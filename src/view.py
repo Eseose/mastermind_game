@@ -57,12 +57,6 @@ class Display:
             choice = input("Quit Game? [Y/N] ").upper()
         return choice.upper()
 
-    def display_confirm_exit_to_main_menu(self):
-        choice = None
-        while choice not in {"Y", "N"}:
-            choice = input("Exit to Main Menu? [Y/N] ").upper()
-        return choice.upper()
-
     def display_choose_difficulty(self):
         display = "Difficulty Levels:\n1 : Easy\n2 : Medium [DEFAULT]\n3 : Hard\n4 : Exit\n"
         print(display)
@@ -83,13 +77,13 @@ class Display:
         
     """
         print(about_full)
-        choice = input("Press ENTER to exit\n")
+        choice = input("Press ENTER to exit")
         return choice
 
     def display_leader_board(self):
         print(f"\t\tLEADER BOARD [{APP_CONFIG.difficulty}]\n\n")
         for game_model in Queries.get_leaders():
-            print(game_model, "\n")
+            print(game_model)
         print("\n")
         choice = input("Press ENTER to exit\n")
         return choice
@@ -97,15 +91,15 @@ class Display:
     def display_rounds(self):
         if APP_CONFIG.current_game_id is not None:
             print(
-                f"\t\tGUESS HISTORY FOR PLAYER [{APP_CONFIG.current_player}]\n\n")
+                f"\n\t\tGUESS HISTORY FOR PLAYER [{APP_CONFIG.current_player}]\n")
             for round_model in Queries.get_rounds():
-                print(round_model, "\n")
+                print(round_model)
             print("\n")
-        # If no round has been played in current game
-        else:
-            print("Guess History Unavailable. START Game.")
-        choice = input("Press ENTER to exit\n")
-        return choice
+        # # # If no round has been played in current game
+        # else:
+        #     print("Guess History Unavailable. START Game.")
+        # choice = input("Press ENTER to exit")
+        # return choice
 
     def display_winner(self, num, attempt):
         attempts = APP_CONFIG.config["attempts"]
@@ -128,12 +122,13 @@ class Display:
         while not valid_input:
             msg = (f"You have {attempts - attempt} attempts left.\n")
             # "Enter G to view your previous guesses\n")
-            # if APP_CONFIG.current_game_id is not None:
-            #     self.display_rounds()
+            self.display_rounds()
             guess_str = input(f"{msg}Round{attempt + 1}\nYour Guess?... \n")
             if guess_str.upper() == "Q":
+                valid_input = True
                 return guess_str.upper()
             elif guess_str.upper == "G":
+                valid_input = True
                 return guess_str.upper()
             else:
                 is_valid = self.is_valid(guess_str=guess_str)
