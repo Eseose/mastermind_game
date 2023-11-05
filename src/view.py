@@ -14,7 +14,7 @@ class Display:
         while choice_int not in options:
             choice = input("Choose Option Number: ")
             if choice.upper() == "Q":
-                return choice
+                return choice.upper()
             else:
                 try:
                     choice_int = int(choice)
@@ -26,7 +26,7 @@ class Display:
         choice = None
         while choice not in options:
             choice = input("Your Choice: ").upper()
-        return choice
+        return choice.upper()
 
     def get_user_name(self):
         if APP_CONFIG.current_player is not None:
@@ -55,13 +55,13 @@ class Display:
         choice = None
         while choice not in {"Y", "N"}:
             choice = input("Quit Game? [Y/N] ").upper()
-        return choice
+        return choice.upper()
 
     def display_confirm_exit_to_main_menu(self):
         choice = None
         while choice not in {"Y", "N"}:
             choice = input("Exit to Main Menu? [Y/N] ").upper()
-        return choice
+        return choice.upper()
 
     def display_choose_difficulty(self):
         display = "Difficulty Levels:\n1 : Easy\n2 : Medium [DEFAULT]\n3 : Hard\n4 : Exit\n"
@@ -126,11 +126,15 @@ class Display:
         attempts = APP_CONFIG.config["attempts"]
         valid_input = False
         while not valid_input:
-            # Enter G to view your previous guesses\n
-            msg = f"You have {attempts - attempt} attempts left.\n"
+            msg = (f"You have {attempts - attempt} attempts left.\n")
+            # "Enter G to view your previous guesses\n")
+            # if APP_CONFIG.current_game_id is not None:
+            #     self.display_rounds()
             guess_str = input(f"{msg}Round{attempt + 1}\nYour Guess?... \n")
-            if guess_str.upper() == "Q":  # or guess_str.upper == "G"
-                return guess_str
+            if guess_str.upper() == "Q":
+                return guess_str.upper()
+            elif guess_str.upper == "G":
+                return guess_str.upper()
             else:
                 is_valid = self.is_valid(guess_str=guess_str)
                 if is_valid[0]:
@@ -159,4 +163,3 @@ class Display:
 
     def display_msg(self, msg):
         print(msg)
-        return

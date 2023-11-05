@@ -37,12 +37,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if len(args.test) > 0:
-        cool_prompt = f'''
+        prompt = f'''
     ######################################################
     ############### Running Specific Test ################
     ######################################################
         '''
-        print(cool_prompt)
+        print(prompt)
         suites_list = []
         loader = unittest.TestLoader()
         for class_name in args.test:
@@ -54,12 +54,12 @@ if __name__ == '__main__':
         testResult = unittest.TextTestRunner(verbosity=2).run(big_suite)
         unittest.main()
     else:
-        cool_prompt = '''
+        prompt = '''
     ######################################################
     ############ RUNNING ALL TESTS in TST dir ############
     ######################################################
         '''
-        print(cool_prompt)
+        print(prompt)
         test_loader = unittest.TestLoader()
         suite = test_loader.discover(
             start_dir="./tst", pattern="*_test.py"

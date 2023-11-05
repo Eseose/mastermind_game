@@ -40,9 +40,10 @@ while game.current_state != game.off:
                 game.choose_difficulty(user_choice)
         elif user_choice == "L":
             view.display_leader_board()
-        elif user_choice == "G":
+    elif game.current_states == game.in_progress:
+        if user_choice == "G":
             view.display_rounds()
-    elif game.current_state == game.in_progress:
-        game.make_attempt(user_choice)
+        else:
+            game.make_attempt(user_choice)
     elif game.current_state == game.finished:
         game.restart_game()
