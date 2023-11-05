@@ -19,12 +19,16 @@ view = Display()
 while game.current_state != game.off:
     user_choice = get_user_input(game, view)
     if user_choice == "Q":
-        # quits from game sets game state to game.off
+        # quits from game when on main menu
         if game.current_state == game.on:
             quit_choice = view.display_confirm_quit()
             game.quit_game(quit_choice)
+
+        # exits to main menu when in progress or finished
+        elif game.current_state == game.in_progress:
+            quit_choice = view.display_confirm_quit()
+            game.exit_to_main_menu(quit_choice)
         else:
-            # exits to main menu
             game.exit_to_main_menu(user_choice)
 
     # main menu view
@@ -36,9 +40,8 @@ while game.current_state != game.off:
             user_choice = view.display_about()
         elif user_choice == "D":
             user_choice = view.display_choose_difficulty()
-            if user_choice == "Q":
-                quit_choice = view.display_confirm_exit_to_main_menu()
-                game.exit_to_main_menu(quit_choice)
+            if user_choice == "Q":  # Option 4 in view
+                game.exit_to_main_menu(user_choice)
             else:
                 game.choose_difficulty(user_choice)
         elif user_choice == "L":

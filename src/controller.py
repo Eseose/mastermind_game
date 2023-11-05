@@ -51,7 +51,8 @@ class GameControl(StateMachine):
     )
     exit_to_main_menu = (
         on.to(on) |
-        in_progress.to(on) |
+        in_progress.to(on, cond="action_confirmed") |
+        in_progress.to(in_progress, unless="action_confirmed") |
         finished.to(on)
     )
     quit_game = (
@@ -145,7 +146,9 @@ class GameControl(StateMachine):
             self.view.display_winner(
                 num=self.game_model.num, attempt=self.game_model.attempt)
         else:
-            if self.game_model.attempt == 10:
+            if self.game_model.attempt + 1 == 10:
+                self.view.display_incorrect(
+                    correct_nums=self.correct_nums, correct_loc=self.correct_loc)
                 self.view.display_loser(num=self.game_model.num)
             elif self.correct_nums == 0 and self.correct_loc == 0:
                 self.view.display_incorrect()
