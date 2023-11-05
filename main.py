@@ -2,6 +2,7 @@ from src.controller import GameControl
 from src.view import Display
 
 
+# displays a view and gets player input based on current game state
 def get_user_input(game_obj: GameControl, view_obj: Display):
     if game_obj.current_state == game_obj.on:
         return view_obj.display_main_menu()
@@ -14,16 +15,19 @@ def get_user_input(game_obj: GameControl, view_obj: Display):
 game = GameControl()
 view = Display()
 
+# while loop runs until game is turned off (state = game.off)
 while game.current_state != game.off:
-    # can input and quit be here???
     user_choice = get_user_input(game, view)
     if user_choice == "Q":
+        # quits from game sets game state to game.off
         if game.current_state == game.on:
             quit_choice = view.display_confirm_quit()
             game.quit_game(quit_choice)
         else:
+            # exits to main menu
             game.exit_to_main_menu(user_choice)
 
+    # main menu view
     if game.current_state == game.on:
         if user_choice == "S":
             view.get_user_name()
@@ -39,7 +43,9 @@ while game.current_state != game.off:
                 game.choose_difficulty(user_choice)
         elif user_choice == "L":
             view.display_leader_board()
+    # player is currently playing a game
     elif game.current_state == game.in_progress:
         game.make_attempt(user_choice)
+    # player has completed the game
     elif game.current_state == game.finished:
         game.restart_game()
