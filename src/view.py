@@ -1,5 +1,5 @@
 from src.app_config import APP_CONFIG
-from src.leader_board import LeaderBoard
+from src.queries import Queries
 
 
 class Display:
@@ -88,9 +88,22 @@ class Display:
 
     def display_leader_board(self):
         print(f"\t\tLEADER BOARD [{APP_CONFIG.difficulty}]\n\n")
-        for game_model in LeaderBoard.get_leaders():
+        for game_model in Queries.get_leaders():
             print(game_model, "\n")
         print("\n")
+        choice = input("Press ENTER to exit\n")
+        return choice
+
+    def display_rounds(self):
+        if APP_CONFIG.current_game_id is not None:
+            print(
+                f"\t\tGUESS HISTORY FOR PLAYER [{APP_CONFIG.current_player}]\n\n")
+            for round_model in Queries.get_rounds():
+                print(round_model, "\n")
+            print("\n")
+        # If no round has been played in current game
+        else:
+            print("Guess History Unavailable. START Game.")
         choice = input("Press ENTER to exit\n")
         return choice
 
@@ -113,9 +126,10 @@ class Display:
         attempts = APP_CONFIG.config["attempts"]
         valid_input = False
         while not valid_input:
+            # Enter G to view your previous guesses\n
             msg = f"You have {attempts - attempt} attempts left.\n"
             guess_str = input(f"{msg}Round{attempt + 1}\nYour Guess?... \n")
-            if guess_str.upper() == "Q":
+            if guess_str.upper() == "Q":  # or guess_str.upper == "G"
                 return guess_str
             else:
                 is_valid = self.is_valid(guess_str=guess_str)
