@@ -2,3 +2,4 @@
 *.vscode*
 *codetester.py*
 *.db*
+*model_data_to_dataframe.py*

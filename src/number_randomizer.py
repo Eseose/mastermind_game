@@ -41,12 +41,11 @@ class NumberRandomizer:
         params = {"num": self.length, "min": self.minimum, "max": self.maximum,
                   "col": self.column_count, "base": self.base,
                   "format": self.output_format, "rnd": self.rand_type}
+
         # try catch statement in case response.status_code is
         # 503 (service unavailable) or 301 (moved permanently)
-        response_str = None
-        while response_str is None:
-            response = requests.get(self.url, params=params)
-            response_str = response.text.strip().replace("\n", "").replace("\t", "")
+        response = requests.get(self.url, params=params)
+        response_str = response.text.strip().replace("\n", "").replace("\t", "")
         if r_type == str:
             return response_str
         response_list = [int(item) for item in response_str]

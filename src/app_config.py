@@ -30,6 +30,7 @@ class AppConfig:
         self.set_difficulty(self.difficulty)
         self._db_session = None
         self.current_player = None
+        self.current_game_id = None
 
     def set_difficulty(self, difficulty):
         if difficulty not in DifficultyConfigDefault:
