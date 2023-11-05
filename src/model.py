@@ -31,7 +31,7 @@ class GameModel(Base):
         print("Random Num =", self.num)
 
     def __str__(self):
-        return f"player: {self.player}, game_id: {self.game_id}, attempt: ({self.attempt + 1}/{self.attempts}), time_elapsed: {self.time_elapsed}, difficulty: {self.difficulty}"
+        return f"player: {self.player}, attempt: ({self.attempt + 1}/{self.attempts}), time_elapsed: {self.time_elapsed}"
 
 
 class RoundModel(Base):
