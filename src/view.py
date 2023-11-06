@@ -119,7 +119,8 @@ class Display:
         about_full = f"""
             ABOUT
     Your task is to guess a 4 digit number correctly from a total of {len(possible_numbers)} different numbers.
-    The number of attempts you have depends on your choosen difficulty level.
+    The range of possible numbers you have to guess from depends on your chosen difficulty level.
+    You have ONLY {APP_CONFIG.config["attempts"]} attempts. Digits in the 4 digit number can be repeated.
     Possible Numbers: {possible_numbers}
     GOOD LUCK!
         
