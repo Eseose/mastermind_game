@@ -46,8 +46,13 @@ class NumberRandomizer:
         # try catch statement in case response.status_code is
         # 503 (service unavailable) or 301 (moved permanently)
         response = requests.get(self.url, params=params)
-        response_str = response.text.strip().replace("\n", "").replace("\t", "")
-        if r_type == str:
-            return response_str
-        response_list = [int(item) for item in response_str]
-        return response_list
+        if response.status_code == 200:
+            response_str = response.text.strip().replace("\n", "").replace("\t", "")
+            if r_type == str:
+                return response_str
+            response_list = [int(item) for item in response_str]
+            return response_list
+        elif response.status_code == 503:
+            return ("service unavailable", )
+        elif response.status_code == 301:
+            return ("moved permanently", )

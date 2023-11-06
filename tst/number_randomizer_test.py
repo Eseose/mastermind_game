@@ -20,5 +20,7 @@ class NumberRandomizerTest(unittest.TestCase):
             result = randomizer.get(rtype=str)
         self.assertNotEqual(
             result, None, "Number Randomizer class unexpectedly returned None")
+        self.assertNotEqual(
+            type(result), tuple, "Number Randomizer API unexpectedly fails")
         self.assertEqual(
             len(result), 10, "Number Randomizer class fails to retrieve correct maximum parameter")
