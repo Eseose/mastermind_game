@@ -23,6 +23,11 @@ DifficultyConfigDefault = {
 
 class AppConfig:
 
+    r'''
+        Stores player and game settings.
+
+    '''
+
     def __init__(self):
         self.difficulty = "Medium"
         self.database_path = "./data/mastermind.db"
@@ -32,12 +37,14 @@ class AppConfig:
         self.current_player = None
         self.current_game_id = None
 
+    # sets difficulty
     def set_difficulty(self, difficulty):
         if difficulty not in DifficultyConfigDefault:
             return False
         self.difficulty = difficulty
         self.config = DifficultyConfigDefault[difficulty]
 
+    # creates a database connection session
     def get_db_session(self):
         if self._db_session is None:
             engine = create_engine(

@@ -4,7 +4,7 @@ import requests
 class NumberRandomizer:
 
     r'''
-        Create a random number given parameters
+        Creates a random number given parameters
 
         :param length: number of digits in the random number.
         :param minimum: smallest value allowed for each digit.
@@ -36,7 +36,8 @@ class NumberRandomizer:
     def get(self, r_type=list):
         r'''
             Generates a new number
-            :rtype List[int]
+            :rtype List[int] DEFAULT
+            :rtype String(str) Optional 
         '''
         params = {"num": self.length, "min": self.minimum, "max": self.maximum,
                   "col": self.column_count, "base": self.base,
