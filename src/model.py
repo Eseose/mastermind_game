@@ -44,7 +44,7 @@ class GameModel(Base):
         self.rounds = []
         self.num = NumberRandomizer(
             maximum=APP_CONFIG.config["maximum"]).get(r_type=str)
-        print("Random Num =", self.num)
+        # print("Random Num =", self.num)
 
     # string representation of GameModel object
     def __str__(self):
