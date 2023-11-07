@@ -4,7 +4,7 @@ Mastermind game is a strategy game in which you have 10 attempts to guess a rand
 ## Thought Process
 My approach to building this game involved a wholistic analysis of the game requirements and final output. Then, breaking down this big picture into bite size pieces that could be implemented. That is, writing down the various features, data requirements and what implementing them would look like.  
 
-Although a traditional procedural approach was easy to implement and would meet the functional requirements, considering the non-functional requirements (gamer experience) and the possibility of scaling, led me to an extensive research into modern game backend technologies. This led to an event-driven approach to implementation. This approach promises to optimize user experience and scalability. I tried to follow the MVC architecture as it allows for easy decoupling of frontend and backend as the build scales. 
+Although a traditional procedural approach was easy to implement and would meet the functional requirements, considering the non-functional requirements (gamer experience) and the possibility of scaling, led me to an extensive research into modern backend game technologies. This led to an event-driven approach to implementation. This approach promises to optimize user experience and scalability. I tried to follow the MVC architecture as it allows for easy decoupling of frontend and backend as the build scales. 
 
 I hope you enjoy the game😊. My personal best in medium difficulty is guessing the 4 digit number on my 6th attempt! I dare you to beat that!😁 
 
@@ -19,7 +19,7 @@ Open Command Prompt(windows) or Terminal(linux/mac) and navigate to your chosen 
 $ cd [workspace directory]
 ```
 ```
-$ git clone https://github.com/Eseose/state_game.git
+$ git clone https://github.com/Eseose/mastermind_game.git
 ```
 
 ### Setup/Run Program
