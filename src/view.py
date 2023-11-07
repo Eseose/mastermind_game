@@ -143,6 +143,7 @@ class Display:
                 f"\n\t\tGUESS HISTORY FOR PLAYER [{APP_CONFIG.current_player}]\n")
             for round_model in Queries.get_rounds():
                 print(round_model)
+            print("\n")
 
     def display_winner(self, num, attempt):
         attempts = APP_CONFIG.config["attempts"]
